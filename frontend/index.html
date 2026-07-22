@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Registration System</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>🎓 Student Registration System</h2>
+
+    <form id="studentForm">
+
+        <label>Username</label>
+        <input
+            type="text"
+            id="username"
+            placeholder="Enter Username"
+            required
+        >
+
+        <label>City</label>
+        <input
+            type="text"
+            id="city"
+            placeholder="Enter City"
+            required
+        >
+
+        <label>Qualification</label>
+        <input
+            type="text"
+            id="qualification"
+            placeholder="Enter Qualification"
+            required
+        >
+
+        <div class="buttons">
+
+            <button id="submitBtn" type="submit">
+                Save Student
+            </button>
+
+            <button
+                id="cancelBtn"
+                type="button"
+                style="display:none;"
+            >
+                Cancel
+            </button>
+
+        </div>
+
+    </form>
+
+    <p id="message"></p>
+
+    <hr>
+
+    <h3>Student Records</h3>
+
+    <table>
+
+        <thead>
+
+        <tr>
+
+            <th>#</th>
+            <th>Username</th>
+            <th>City</th>
+            <th>Qualification</th>
+            <th>Action</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody id="students">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
