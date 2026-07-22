@@ -1,3 +1,6 @@
+
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -8,7 +11,9 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect("mongodb://127.0.0.1:27017/studentdb")
+mongoose.connect(
+  `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DATABASE}`
+)
 .then(() => console.log("MongoDB Connected"))
 .catch(err => console.log(err));
 
