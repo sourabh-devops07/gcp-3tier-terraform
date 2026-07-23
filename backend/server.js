@@ -11,11 +11,9 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect(
-  `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DATABASE}`
-)
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log(err));
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
 
 // Schema
 const studentSchema = new mongoose.Schema({
