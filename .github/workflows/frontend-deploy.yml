@@ -1,9 +1,9 @@
-name: Deploy Frontend to GCP VM
+name: Deploy Frontend Dev Environment
 
 on:
   push:
     branches:
-      - main
+      - dev
 
 permissions:
   contents: read
@@ -14,8 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout Repository
         uses: actions/checkout@v4
+
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -23,21 +25,24 @@ jobs:
           workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
+
       - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Copy frontend files to VM
+
+      - name: Copy frontend files to Dev VM
         run: |
           gcloud compute scp \
             --quiet \
             --recurse \
             frontend/* \
-            sourabh@frontend-vm:/tmp/frontend \
+            sourabh@frontend-dev-vm:/tmp/frontend \
             --zone=asia-south1-a
 
-      - name: Deploy frontend on VM
+
+      - name: Deploy frontend on Dev VM
         run: |
-          gcloud compute ssh sourabh@frontend-vm \
+          gcloud compute ssh sourabh@frontend-dev-vm \
             --quiet \
             --zone=asia-south1-a \
             --command="
