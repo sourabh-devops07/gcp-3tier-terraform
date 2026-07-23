@@ -1,0 +1,48 @@
+name: Deploy Frontend to GCP VM
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Copy frontend files to VM
+        run: |
+          gcloud compute scp \
+            --quiet \
+            --recurse \
+            frontend/* \
+            sourabh@frontend-vm:/tmp/frontend \
+            --zone=asia-south1-a
+
+      - name: Deploy frontend on VM
+        run: |
+          gcloud compute ssh sourabh@frontend-vm \
+            --quiet \
+            --zone=asia-south1-a \
+            --command="
+              sudo mkdir -p /var/www/html &&
+              sudo cp -r /tmp/frontend/* /var/www/html/ &&
+              sudo chown -R www-data:www-data /var/www/html &&
+              sudo systemctl restart nginx
+            "
