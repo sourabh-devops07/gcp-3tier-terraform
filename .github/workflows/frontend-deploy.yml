@@ -1,9 +1,9 @@
-name: Deploy Frontend to GCP VM
+name: Deploy Frontend Production Environment
 
 on:
   push:
     branches:
-      - main
+      - prod
 
 permissions:
   contents: read
@@ -26,20 +26,26 @@ jobs:
       - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Copy frontend files to VM
+      - name: Set GCP Project
+        run: |
+          gcloud config set project our-mediator-500104-u5
+
+      - name: Copy frontend files to Production VM
         run: |
           gcloud compute scp \
             --quiet \
             --recurse \
             frontend/* \
-            sourabh@frontend-vm:/tmp/frontend \
-            --zone=asia-south1-a
+            sourabh@frontend-prod-vm:/tmp/frontend \
+            --zone=asia-south1-a \
+            --project=our-mediator-500104-u5
 
-      - name: Deploy frontend on VM
+      - name: Deploy frontend on Production VM
         run: |
-          gcloud compute ssh sourabh@frontend-vm \
+          gcloud compute ssh sourabh@frontend-prod-vm \
             --quiet \
             --zone=asia-south1-a \
+            --project=our-mediator-500104-u5 \
             --command="
               sudo mkdir -p /var/www/html &&
               sudo cp -r /tmp/frontend/* /var/www/html/ &&

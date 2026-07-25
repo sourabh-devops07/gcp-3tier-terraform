@@ -1,5 +1,5 @@
 resource "google_compute_instance" "frontend" {
-  name         = "frontend-vm"
+  name         = "frontend-prod-vm"
   machine_type = "e2-micro"
   zone         = var.zone
 
@@ -19,7 +19,7 @@ resource "google_compute_instance" "frontend" {
 }
 
 resource "google_compute_instance" "backend" {
-  name         = "backend-vm"
+  name         = "backend-prod-vm"
   machine_type = "e2-micro"
   zone         = var.zone
 
