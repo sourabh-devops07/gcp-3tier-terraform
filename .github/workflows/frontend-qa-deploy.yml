@@ -1,0 +1,60 @@
+name: Deploy Frontend QA Environment
+
+on:
+  push:
+    branches:
+      - qa
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+
+      - name: Set GCP Project
+        run: |
+          gcloud config set project golden-system-500104-h5
+
+
+      - name: Copy frontend files to QA VM
+        run: |
+          gcloud compute scp \
+            --quiet \
+            --recurse \
+            frontend/* \
+            sourabh@frontend-qa-vm:/tmp/frontend \
+            --zone=asia-south1-a \
+            --project=golden-system-500104-h5
+
+
+      - name: Deploy frontend on QA VM
+        run: |
+          gcloud compute ssh sourabh@frontend-qa-vm \
+            --quiet \
+            --zone=asia-south1-a \
+            --project=golden-system-500104-h5 \
+            --command="
+              sudo mkdir -p /var/www/html &&
+              sudo cp -r /tmp/frontend/* /var/www/html/ &&
+              sudo chown -R www-data:www-data /var/www/html &&
+              sudo systemctl restart nginx
+            "
