@@ -1,11 +1,11 @@
 resource "google_compute_router" "router" {
-  name    = "three-tier-router"
+  name    = "qa-three-tier-router"
   region  = var.region
   network = google_compute_network.vpc.id
 }
 
 resource "google_compute_router_nat" "nat" {
-  name                               = "three-tier-nat"
+  name                               = "qa-three-tier-nat"
   router                             = google_compute_router.router.name
   region                             = var.region
   nat_ip_allocate_option             = "AUTO_ONLY"
