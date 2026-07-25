@@ -21,30 +21,29 @@ async function loadStudents() {
 
             <td>${student.username}</td>
 
+            <td>${student.city}</td>
 
             <td>${student.qualification}</td>
 
             <td>
 
-<div class="action-buttons">
+                <div class="action-buttons">
 
-<button
-class="edit-btn"
-onclick="editStudent('${student._id}')">
-✏ Edit
-</button>
+                    <button
+                        class="edit-btn"
+                        onclick="editStudent('${student._id}')">
+                        ✏ Edit
+                    </button>
 
-<button
-class="delete-btn"
-onclick="deleteStudent('${student._id}')">
-🗑 Delete
-</button>
+                    <button
+                        class="delete-btn"
+                        onclick="deleteStudent('${student._id}')">
+                        🗑 Delete
+                    </button>
 
-</div>
+                </div>
 
-</td>
-
-
+            </td>
 
         </tr>
         `;
@@ -83,13 +82,13 @@ form.addEventListener("submit", async function(e){
 
         });
 
-        message.innerHTML="Student Updated Successfully";
+        message.innerHTML = "Student Updated Successfully";
 
-        editId=null;
+        editId = null;
 
-        submitBtn.innerHTML="Save Student";
+        submitBtn.innerHTML = "Save Student";
 
-        cancelBtn.style.display="none";
+        cancelBtn.style.display = "none";
 
     }
     else{
@@ -106,7 +105,7 @@ form.addEventListener("submit", async function(e){
 
         });
 
-        message.innerHTML="Student Saved Successfully";
+        message.innerHTML = "Student Saved Successfully";
 
     }
 
@@ -118,37 +117,37 @@ form.addEventListener("submit", async function(e){
 
 async function editStudent(id){
 
-    const response=await fetch("/api/students");
+    const response = await fetch("/api/students");
 
-    const students=await response.json();
+    const students = await response.json();
 
-    const student=students.find(s=>s._id===id);
+    const student = students.find(s => s._id === id);
 
-    document.getElementById("username").value=student.username;
+    document.getElementById("username").value = student.username;
 
-    document.getElementById("city").value=student.city;
+    document.getElementById("city").value = student.city;
 
-    document.getElementById("qualification").value=student.qualification;
+    document.getElementById("qualification").value = student.qualification;
 
-    editId=id;
+    editId = id;
 
-    submitBtn.innerHTML="Update Student";
+    submitBtn.innerHTML = "Update Student";
 
-    cancelBtn.style.display="inline-block";
+    cancelBtn.style.display = "inline-block";
 
 }
 
-cancelBtn.addEventListener("click",()=>{
+cancelBtn.addEventListener("click", () => {
 
-    editId=null;
+    editId = null;
 
     form.reset();
 
-    submitBtn.innerHTML="Save Student";
+    submitBtn.innerHTML = "Save Student";
 
-    cancelBtn.style.display="none";
+    cancelBtn.style.display = "none";
 
-    message.innerHTML="";
+    message.innerHTML = "";
 
 });
 
@@ -166,7 +165,7 @@ async function deleteStudent(id){
 
     });
 
-    message.innerHTML="Student Deleted Successfully";
+    message.innerHTML = "Student Deleted Successfully";
 
     loadStudents();
 
