@@ -32,7 +32,7 @@ jobs:
 
       - name: Set GCP Project
         run: |
-          gcloud config set project golden-system-500104-h5
+          gcloud config set project infra-lodge-500104-g1
 
 
       - name: Copy frontend files to QA VM
@@ -43,7 +43,7 @@ jobs:
             frontend/* \
             sourabh@frontend-qa-vm:/tmp/frontend \
             --zone=asia-south1-a \
-            --project=golden-system-500104-h5
+            --project=infra-lodge-500104-g1
 
 
       - name: Deploy frontend on QA VM
@@ -51,7 +51,7 @@ jobs:
           gcloud compute ssh sourabh@frontend-qa-vm \
             --quiet \
             --zone=asia-south1-a \
-            --project=golden-system-500104-h5 \
+            --project=infra-lodge-500104-g1 \
             --command="
               sudo mkdir -p /var/www/html &&
               sudo cp -r /tmp/frontend/* /var/www/html/ &&
